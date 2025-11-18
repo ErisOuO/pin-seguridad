@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function RegisterForm({ onToggle }) {
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:4000/auth/register', {
+    const res = await fetch('http://localhost:5000/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ usuario, contrasena, email }),
@@ -31,16 +33,33 @@ export default function RegisterForm({ onToggle }) {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="mb-3 position-relative">
           <label className="form-label">Contraseña</label>
+
+          {/* Input con icono */}
           <input
             className="form-control"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Crea una contraseña"
             value={contrasena}
             onChange={(e) => setContrasena(e.target.value)}
             required
           />
+
+          {/* Icono para mostrar/ocultar */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="position-absolute"
+            style={{
+              right: '10px',
+              top: '38px',
+              background: 'none',
+              border: 'none',
+            }}
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
 
         <div className="mb-3">

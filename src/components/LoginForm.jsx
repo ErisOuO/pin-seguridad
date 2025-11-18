@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import VerifyCodeForm from './VerifyCodeForm';
+import { Eye, EyeOff } from 'lucide-react';
 
-export default function LoginForm({ onToggle }) {
+export default function LoginForm({ onToggleRegister, onToggleRecovery }) {
   const [usuario, setUsuario] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [msg, setMsg] = useState('');
   const [verifiedStep, setVerifiedStep] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch('http://localhost:4000/auth/login', {
+    const res = await fetch('http://localhost:5000/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ usuario, contrasena }),
@@ -35,16 +37,31 @@ export default function LoginForm({ onToggle }) {
           />
         </div>
 
-        <div className="mb-3">
+        <div className="mb-3 position-relative">
           <label className="form-label">Contraseña</label>
+
           <input
             className="form-control"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Tu contraseña"
             value={contrasena}
             onChange={(e) => setContrasena(e.target.value)}
             required
           />
+
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="position-absolute"
+            style={{
+              right: '10px',
+              top: '38px',
+              background: 'none',
+              border: 'none',
+            }}
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
         </div>
 
         <button type="submit" className="btn btn-primary w-100 mb-3">
@@ -56,9 +73,19 @@ export default function LoginForm({ onToggle }) {
           <button
             type="button"
             className="btn btn-link p-0"
-            onClick={onToggle}
+            onClick={onToggleRegister}
           >
             Regístrate aquí
+          </button>
+        </p>
+
+        <p className="text-center mt-3">
+          <button
+            type="button"
+            className="btn btn-link p-0"
+            onClick={onToggleRecovery}
+          >
+            ¿Olvidaste tu contraseña?
           </button>
         </p>
 
