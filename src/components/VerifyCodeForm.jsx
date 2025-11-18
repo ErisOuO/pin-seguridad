@@ -7,7 +7,7 @@ export default function VerifyCodeForm({ usuario }) {
   const handleVerify = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/auth/verify", {
+    const res = await fetch("https://server-wcpl.onrender.com/auth/verify", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ usuario, code })   // 🔥 IMPORTANTE
